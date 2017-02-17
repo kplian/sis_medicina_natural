@@ -14,7 +14,7 @@ class ACTTratamiento extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
-		 $this->objParam->addFiltro("et.id_enfermedad = ".$this->objParam->getParametro('id_enfermedad')); 
+		 //$this->objParam->addFiltro("et.id_enfermedad = ".$this->objParam->getParametro('id_enfermedad')); 
 		 
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);

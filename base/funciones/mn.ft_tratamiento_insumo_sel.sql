@@ -1,6 +1,6 @@
 --------------- SQL ---------------
 
-CREATE OR REPLACE FUNCTION mn.ft_enfermedad_sel (
+CREATE OR REPLACE FUNCTION mn.ft_tratamiento_insumo_sel (
   p_administrador integer,
   p_id_usuario integer,
   p_tabla varchar,
@@ -10,10 +10,10 @@ RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:		Medicina natural
- FUNCION: 		mn.ft_enfermedad_sel
- DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'mn.tenfermedad'
+ FUNCION: 		mn.ft_tratamiento_insumo_sel
+ DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'mn.ttratamiento_insumo'
  AUTOR: 		 (admin)
- FECHA:	        25-01-2017 21:48:50
+ FECHA:	        17-02-2017 18:04:38
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
@@ -32,48 +32,39 @@ DECLARE
 			    
 BEGIN
 
-	v_nombre_funcion = 'mn.ft_enfermedad_sel';
+	v_nombre_funcion = 'mn.ft_tratamiento_insumo_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
- 	#TRANSACCION:  'MN_ENF_SEL'
+ 	#TRANSACCION:  'MN_TRIN_SEL'
  	#DESCRIPCION:	Consulta de datos
  	#AUTOR:		admin	
- 	#FECHA:		25-01-2017 21:48:50
+ 	#FECHA:		17-02-2017 18:04:38
 	***********************************/
 
-	if(p_transaccion='MN_ENF_SEL')then
+	if(p_transaccion='MN_TRIN_SEL')then
      				
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
-						enf.id_enfermedad,
-						enf.sintomas,
-						array_to_string( enf.sinonimos, '','' )::varchar as sinonimos ,
-						enf.estado_reg,
-						enf.nombre,
-						enf.id_usuario_ai,
-						enf.fecha_reg,
-						enf.usuario_ai,
-						enf.id_usuario_reg,
-						enf.id_usuario_mod,
-						enf.fecha_mod,
+						trin.id_tratamiento_insumo,
+						trin.id_tratamiento,
+						trin.id_insumo,
+						trin.estado_reg,
+						trin.id_usuario_ai,
+						trin.id_usuario_reg,
+						trin.usuario_ai,
+						trin.fecha_reg,
+						trin.id_usuario_mod,
+						trin.fecha_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        
-                        (select array_to_string( array_agg(et.id_tratamiento), '','' ) from mn.tenfermedad en 
-                        join mn.tenfermedad_tratamiento et on et.id_enfermedad=en.id_enfermedad
-                        join mn.ttratamiento tr on tr.id_tratamiento = et.id_tratamiento
-                        where en.id_enfermedad= enf.id_enfermedad)::VARCHAR as id_tratamientos,
-                        
-                        (select array_to_string( array_agg(tr.descripcion), '','' ) from mn.tenfermedad en 
-                        join mn.tenfermedad_tratamiento et on et.id_enfermedad=en.id_enfermedad
-                        join mn.ttratamiento tr on tr.id_tratamiento = et.id_tratamiento
-                        where en.id_enfermedad= enf.id_enfermedad)::VARCHAR as tratamientos
-                        	
-						from mn.tenfermedad enf
-						inner join segu.tusuario usu1 on usu1.id_usuario = enf.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = enf.id_usuario_mod
+                        i.nombre,
+                        i.codigo			
+						from mn.ttratamiento_insumo trin
+						inner join segu.tusuario usu1 on usu1.id_usuario = trin.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = trin.id_usuario_mod
+                        join mn.tinsumo i on i.id_insumo = trin.id_insumo
 				        where  ';
 			
 			--Definicion de la respuesta
@@ -86,20 +77,21 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'MN_ENF_CONT'
+ 	#TRANSACCION:  'MN_TRIN_CONT'
  	#DESCRIPCION:	Conteo de registros
  	#AUTOR:		admin	
- 	#FECHA:		25-01-2017 21:48:50
+ 	#FECHA:		17-02-2017 18:04:38
 	***********************************/
 
-	elsif(p_transaccion='MN_ENF_CONT')then
+	elsif(p_transaccion='MN_TRIN_CONT')then
 
 		begin
 			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_enfermedad)
-					    from mn.tenfermedad enf
-					    inner join segu.tusuario usu1 on usu1.id_usuario = enf.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = enf.id_usuario_mod
+			v_consulta:='select count(id_tratamiento_insumo)
+					    from mn.ttratamiento_insumo trin
+					    inner join segu.tusuario usu1 on usu1.id_usuario = trin.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = trin.id_usuario_mod
+                        join mn.tinsumo i on i.id_insumo = trin.id_insumo
 					    where ';
 			
 			--Definicion de la respuesta		    

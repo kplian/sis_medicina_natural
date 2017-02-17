@@ -49,6 +49,54 @@ BEGIN
 			v_consulta:='select
 						tra.id_tratamiento,
 						tra.estado_reg,
+						tra.descripcion,
+						tra.fecha_reg,
+						tra.usuario_ai,
+						tra.id_usuario_reg,
+						tra.id_usuario_ai,
+						tra.id_usuario_mod,
+						tra.fecha_mod,
+						usu1.cuenta as usr_reg,
+						usu2.cuenta as usr_mod,
+                        
+                        (select array_to_string( array_agg(ti.id_insumo), '','' ) from mn.ttratamiento tr 
+                        join mn.ttratamiento_insumo ti on ti.id_tratamiento=tr.id_tratamiento
+                        join mn.tinsumo ins on ins.id_insumo = ti.id_insumo
+                        where tr.id_tratamiento = tra.id_tratamiento)::VARCHAR as id_insumos,
+                        
+                        (select array_to_string( array_agg(ins.nombre), '','' ) from mn.ttratamiento tr 
+                        join mn.ttratamiento_insumo ti on ti.id_tratamiento=tr.id_tratamiento
+                        join mn.tinsumo ins on ins.id_insumo = ti.id_insumo
+                        where tr.id_tratamiento= tra.id_tratamiento)::VARCHAR as insumos
+                        
+						from mn.ttratamiento tra
+						inner join segu.tusuario usu1 on usu1.id_usuario = tra.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = tra.id_usuario_mod
+				        where  ';
+			
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||v_parametros.filtro;
+			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
+			--Devuelve la respuesta
+			return v_consulta;
+						
+		end;
+        
+	/*********************************    
+ 	#TRANSACCION:  'MN_ENTRA_SEL'
+ 	#DESCRIPCION:	Consulta de datos
+ 	#AUTOR:		Juan	
+ 	#FECHA:		06-06-2017 22:44:44
+	***********************************/
+
+	elsif(p_transaccion='MN_ENTRA_SEL')then
+     				
+    	begin
+    		--Sentencia de la consulta
+			v_consulta:='select
+						tra.id_tratamiento,
+						tra.estado_reg,
 						tra.insumos,
 						tra.descripcion,
 						tra.fecha_reg,
@@ -59,7 +107,7 @@ BEGIN
 						tra.fecha_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        et.id_enfermedad	
+                        et.id_	enfermedad	
 						from mn.ttratamiento tra
 						inner join segu.tusuario usu1 on usu1.id_usuario = tra.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tra.id_usuario_mod
@@ -90,7 +138,6 @@ BEGIN
 					    from mn.ttratamiento tra
 					    inner join segu.tusuario usu1 on usu1.id_usuario = tra.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tra.id_usuario_mod
-                        join mn.tenfermedad_tratamiento et on et.id_tratamiento = tra.id_tratamiento
 					    where ';
 			
 			--Definicion de la respuesta		    

@@ -34,6 +34,9 @@ DECLARE
 	v_id_enfermedad	        integer;
     
     v_asinonimo  	        varchar[];
+    
+    item_id_enfermedades    INTEGER;
+    enfermedades            VARCHAR [];
 			    
 BEGIN
 
@@ -76,10 +79,36 @@ BEGIN
 			p_id_usuario,
 			null,
 			null
-							
-			
-			
+
 			)RETURNING id_enfermedad into v_id_enfermedad;
+            
+            --Insertar tabla enfermedad tratamiento
+           enfermedades := string_to_array(v_parametros.id_tratamientos, ',');
+
+            FOREACH item_id_enfermedades IN ARRAY enfermedades LOOP
+              insert into mn.tenfermedad_tratamiento(
+              id_enfermedad,
+              id_tratamiento,
+              estado_reg,
+              id_usuario_ai,
+              id_usuario_reg,
+              fecha_reg,
+              usuario_ai,
+              fecha_mod,
+              id_usuario_mod
+              ) values(
+              v_id_enfermedad,
+              item_id_enfermedades :: INTEGER,
+              'activo',
+              v_parametros._id_usuario_ai,
+              p_id_usuario,
+              now(),
+              v_parametros._nombre_usuario_ai,
+              null,
+              null
+              );
+            END LOOP;
+            ------------------------------------------
 			
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Enfermedad almacenado(a) con exito (id_enfermedad'||v_id_enfermedad||')'); 
@@ -112,6 +141,35 @@ BEGIN
 			id_usuario_ai = v_parametros._id_usuario_ai,
 			usuario_ai = v_parametros._nombre_usuario_ai
 			where id_enfermedad=v_parametros.id_enfermedad;
+            
+            --Modificar tabla enfermedad tratamiento
+            delete  from mn.tenfermedad_tratamiento where id_enfermedad=v_parametros.id_enfermedad;
+            enfermedades := string_to_array(v_parametros.id_tratamientos, ',');
+
+            FOREACH item_id_enfermedades IN ARRAY enfermedades LOOP
+              insert into mn.tenfermedad_tratamiento(
+              id_enfermedad,
+              id_tratamiento,
+              estado_reg,
+              id_usuario_ai,
+              id_usuario_reg,
+              fecha_reg,
+              usuario_ai,
+              fecha_mod,
+              id_usuario_mod
+              ) values(
+              v_parametros.id_enfermedad,
+              item_id_enfermedades :: INTEGER,
+              'activo',
+              v_parametros._id_usuario_ai,
+              p_id_usuario,
+              now(),
+              v_parametros._nombre_usuario_ai,
+              null,
+              null
+              );
+            END LOOP;
+            ------------------------------------------
                
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Enfermedad modificado(a)'); 
@@ -133,6 +191,9 @@ BEGIN
 
 		begin
 			--Sentencia de la eliminacion
+            
+            delete  from mn.tenfermedad_tratamiento where id_enfermedad=v_parametros.id_enfermedad;
+            
 			delete from mn.tenfermedad
             where id_enfermedad=v_parametros.id_enfermedad;
                

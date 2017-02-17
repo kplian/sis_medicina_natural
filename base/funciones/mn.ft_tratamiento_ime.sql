@@ -31,7 +31,10 @@ DECLARE
 	v_resp		            varchar;
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
-	v_id_tratamiento	integer;
+	v_id_tratamiento	    integer;
+    
+    item_id_insumos         INTEGER;
+    insumos                 VARCHAR [];
 			    
 BEGIN
 
@@ -51,7 +54,6 @@ BEGIN
         	--Sentencia de la insercion
         	insert into mn.ttratamiento(
 			estado_reg,
-			insumos,
 			descripcion,
 			fecha_reg,
 			usuario_ai,
@@ -61,7 +63,6 @@ BEGIN
 			fecha_mod
           	) values(
 			'activo',
-			v_parametros.insumos,
 			v_parametros.descripcion,
 			now(),
 			v_parametros._nombre_usuario_ai,
@@ -71,9 +72,34 @@ BEGIN
 			null
 			)RETURNING id_tratamiento into v_id_tratamiento;
             
+            --Insertar tabla tratamiento insumo
+            insumos := string_to_array(v_parametros.id_insumos, ',');
 
-            insert into mn.tenfermedad_tratamiento(id_enfermedad, id_tratamiento)  VALUES  (v_parametros.id_enfermedad,v_id_tratamiento);
-			
+            FOREACH item_id_insumos IN ARRAY insumos LOOP
+                insert into mn.ttratamiento_insumo(
+                id_tratamiento,
+                id_insumo,
+                estado_reg,
+                id_usuario_ai,
+                id_usuario_reg,
+                usuario_ai,
+                fecha_reg,
+                id_usuario_mod,
+                fecha_mod
+                ) values(
+                v_id_tratamiento,
+                item_id_insumos::INTEGER,
+                'activo',
+                v_parametros._id_usuario_ai,
+                p_id_usuario,
+                v_parametros._nombre_usuario_ai,
+                now(),
+                null,
+                null
+			);
+            END LOOP;
+            ------------------------------------------
+            
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tratamiento almacenado(a) con exito (id_tratamiento'||v_id_tratamiento||')'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_tratamiento',v_id_tratamiento::varchar);
@@ -98,13 +124,41 @@ BEGIN
 		begin
 			--Sentencia de la modificacion
 			update mn.ttratamiento set
-			insumos = v_parametros.insumos,
 			descripcion = v_parametros.descripcion,
 			id_usuario_mod = p_id_usuario,
 			fecha_mod = now(),
 			id_usuario_ai = v_parametros._id_usuario_ai,
 			usuario_ai = v_parametros._nombre_usuario_ai
 			where id_tratamiento=v_parametros.id_tratamiento;
+            
+            --Insertar tabla tratamiento insumo
+            delete  from mn.ttratamiento_insumo where id_tratamiento=v_parametros.id_tratamiento;
+            insumos := string_to_array(v_parametros.id_insumos, ',');
+
+            FOREACH item_id_insumos IN ARRAY insumos LOOP
+                insert into mn.ttratamiento_insumo(
+                id_tratamiento,
+                id_insumo,
+                estado_reg,
+                id_usuario_ai,
+                id_usuario_reg,
+                usuario_ai,
+                fecha_reg,
+                id_usuario_mod,
+                fecha_mod
+                ) values(
+                v_parametros.id_tratamiento,
+                item_id_insumos::INTEGER,
+                'activo',
+                v_parametros._id_usuario_ai,
+                p_id_usuario,
+                v_parametros._nombre_usuario_ai,
+                now(),
+                null,
+                null
+			);
+            END LOOP;
+            ------------------------------------------
                
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tratamiento modificado(a)'); 
@@ -126,6 +180,8 @@ BEGIN
 
 		begin
 			--Sentencia de la eliminacion
+            delete from mn.ttratamiento_insumo where id_tratamiento=v_parametros.id_tratamiento;
+            
 			delete from mn.ttratamiento
             where id_tratamiento=v_parametros.id_tratamiento;
                

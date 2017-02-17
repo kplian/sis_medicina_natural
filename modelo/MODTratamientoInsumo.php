@@ -1,42 +1,41 @@
 <?php
 /**
 *@package pXP
-*@file gen-MODEnfermedad.php
+*@file gen-MODTratamientoInsumo.php
 *@author  (admin)
-*@date 25-01-2017 21:48:50
+*@date 17-02-2017 18:04:38
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
 */
 
-class MODEnfermedad extends MODbase{
+class MODTratamientoInsumo extends MODbase{
 	
 	function __construct(CTParametro $pParam){
 		parent::__construct($pParam);
 	}
 			
-	function listarEnfermedad(){
+	function listarTratamientoInsumo(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='mn.ft_enfermedad_sel';
-		$this->transaccion='MN_ENF_SEL';
+		$this->procedimiento='mn.ft_tratamiento_insumo_sel';
+		$this->transaccion='MN_TRIN_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 				
 		//Definicion de la lista del resultado del query
-		$this->captura('id_enfermedad','int4');
-		$this->captura('sintomas','varchar');
-		$this->captura('sinonimos','varchar');
+		$this->captura('id_tratamiento_insumo','int4');
+		$this->captura('id_tratamiento','int4');
+		$this->captura('id_insumo','int4');
 		$this->captura('estado_reg','varchar');
-		$this->captura('nombre','varchar');
 		$this->captura('id_usuario_ai','int4');
-		$this->captura('fecha_reg','timestamp');
-		$this->captura('usuario_ai','varchar');
 		$this->captura('id_usuario_reg','int4');
+		$this->captura('usuario_ai','varchar');
+		$this->captura('fecha_reg','timestamp');
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		
-		$this->captura('id_tratamientos','varchar');
-		$this->captura('tratamientos','varchar');
-		
+		$this->captura('nombre','varchar');
+		$this->captura('codigo','varchar');
+
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -45,19 +44,16 @@ class MODEnfermedad extends MODbase{
 		return $this->respuesta;
 	}
 			
-	function insertarEnfermedad(){
+	function insertarTratamientoInsumo(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='mn.ft_enfermedad_ime';
-		$this->transaccion='MN_ENF_INS';
+		$this->procedimiento='mn.ft_tratamiento_insumo_ime';
+		$this->transaccion='MN_TRIN_INS';
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
-		$this->setParametro('sintomas','sintomas','varchar');
-		$this->setParametro('sinonimos','sinonimos','varchar');
+		$this->setParametro('id_tratamiento','id_tratamiento','int4');
+		$this->setParametro('id_insumo','id_insumo','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
-		$this->setParametro('nombre','nombre','varchar');
-		
-		$this->setParametro('id_tratamientos','id_tratamientos','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -67,20 +63,17 @@ class MODEnfermedad extends MODbase{
 		return $this->respuesta;
 	}
 			
-	function modificarEnfermedad(){
+	function modificarTratamientoInsumo(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='mn.ft_enfermedad_ime';
-		$this->transaccion='MN_ENF_MOD';
+		$this->procedimiento='mn.ft_tratamiento_insumo_ime';
+		$this->transaccion='MN_TRIN_MOD';
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
-		$this->setParametro('id_enfermedad','id_enfermedad','int4');
-		$this->setParametro('sintomas','sintomas','varchar');
-		$this->setParametro('sinonimos','sinonimos','varchar');
+		$this->setParametro('id_tratamiento_insumo','id_tratamiento_insumo','int4');
+		$this->setParametro('id_tratamiento','id_tratamiento','int4');
+		$this->setParametro('id_insumo','id_insumo','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
-		$this->setParametro('nombre','nombre','varchar');
-		
-        $this->setParametro('id_tratamientos','id_tratamientos','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -90,14 +83,14 @@ class MODEnfermedad extends MODbase{
 		return $this->respuesta;
 	}
 			
-	function eliminarEnfermedad(){
+	function eliminarTratamientoInsumo(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='mn.ft_enfermedad_ime';
-		$this->transaccion='MN_ENF_ELI';
+		$this->procedimiento='mn.ft_tratamiento_insumo_ime';
+		$this->transaccion='MN_TRIN_ELI';
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
-		$this->setParametro('id_enfermedad','id_enfermedad','int4');
+		$this->setParametro('id_tratamiento_insumo','id_tratamiento_insumo','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

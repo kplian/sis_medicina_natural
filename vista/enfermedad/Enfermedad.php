@@ -33,34 +33,96 @@ Phx.vista.Enfermedad=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
+				name: 'nombre',
+				fieldLabel: 'Nombre',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:50
+			},
+				type:'TextField',
+				filters:{pfiltro:'enf.nombre',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},	
+		{
+			config:{
 				name: 'sintomas',
-				fieldLabel: 'sintomas',
+				fieldLabel: 'Sintomas',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
 				maxLength:500
 			},
-				type:'TextField',
+				type:'TextArea',
 				filters:{pfiltro:'enf.sintomas',type:'string'},
 				id_grupo:1,
 				grid:true,
 				form:true
-		},
+		},	
 		{
 			config:{
 				name: 'sinonimos',
-				fieldLabel: 'sinonimos',
+				fieldLabel: 'Sinonimos',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
 				maxLength:500
 			},
-				type:'TextField',
+				type:'TextArea',
 				filters:{pfiltro:'enf.sinonimos',type:'string'},
 				id_grupo:1,
 				grid:true,
 				form:true
 		},
+        {
+                    config: {
+                        //enviar erreglo
+                        name: 'id_tratamientos',
+                        fieldLabel: 'Tratamientos',
+                        allowBlank: true,
+                        emptyText: 'Elija una opción...',
+                        store: new Ext.data.JsonStore({
+                            url: '../../sis_medicina_natural/control/Tratamiento/listarTratamiento',
+                            id: 'id_tratamiento',
+                            root: 'datos',
+                            sortInfo: {
+                                field: 'descripcion',
+                                direction: 'ASC'
+                            },
+                            totalProperty: 'total',
+                            fields: ['id_tratamiento', 'descripcion'],
+                            remoteSort: true,
+                            baseParams: {par_filtro: 'tra.descripcion'}
+                        }),
+                        valueField: 'id_tratamiento',
+                        displayField: 'descripcion',
+                        gdisplayField: 'descripcion',
+                        hiddenName: 'id_tratamiento',
+                        forceSelection: true,
+                        typeAhead: false,
+                        triggerAction: 'all',
+                        lazyRender: true,
+                        mode: 'remote',
+                        pageSize: 5,
+                        queryDelay: 1000,
+                        anchor: '80%',
+                        gwidth: 150,
+                        minChars: 2,
+                        //para multiples
+                        enableMultiSelect: true,
+                        renderer: function (value, p, record) {
+                            return String.format('{0}', record.data['tratamientos']);
+                        }
+                    },
+                    //cambair el tipo de combo
+                    type: 'AwesomeCombo',
+                    id_grupo: 0,
+                    filters: {pfiltro: 'tra.descripcion', type: 'string'},
+                    grid: false,
+                    form: true
+        },
 		{
 			config:{
 				name: 'estado_reg',
@@ -73,23 +135,8 @@ Phx.vista.Enfermedad=Ext.extend(Phx.gridInterfaz,{
 				type:'TextField',
 				filters:{pfiltro:'enf.estado_reg',type:'string'},
 				id_grupo:1,
-				grid:true,
+				grid:false,
 				form:false
-		},
-		{
-			config:{
-				name: 'nombre',
-				fieldLabel: 'nombre',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:50
-			},
-				type:'TextField',
-				filters:{pfiltro:'enf.nombre',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
 		},
 		{
 			config:{
@@ -149,7 +196,7 @@ Phx.vista.Enfermedad=Ext.extend(Phx.gridInterfaz,{
 				type:'Field',
 				filters:{pfiltro:'usu1.cuenta',type:'string'},
 				id_grupo:1,
-				grid:true,
+				grid:false,
 				form:false
 		},
 		{
@@ -205,6 +252,9 @@ Phx.vista.Enfermedad=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
 		
+		{name:'id_tratamientos', type: 'string'},
+		{name:'tratamientos', type: 'string'},
+		
 	],
 	sortInfo:{
 		field: 'id_enfermedad',
@@ -212,13 +262,15 @@ Phx.vista.Enfermedad=Ext.extend(Phx.gridInterfaz,{
 	},
 	bdel:true,
 	bsave:true,
+	
 	east: {
-                url: '../../../sis_medicina_natural/vista/tratamiento/Tratamiento.php',
-                title: 'Tratamientos',
+                url: '../../../sis_medicina_natural/vista/enfermedad_tratamiento/EnfermedadTratamiento.php',
+                title: 'Tratamientos asignados',
                 width: '50%',
-                cls: 'Tratamiento',
+                cls: 'EnfermedadTratamiento',
                 collapsed: false
     }
+    
 
 	}
 )

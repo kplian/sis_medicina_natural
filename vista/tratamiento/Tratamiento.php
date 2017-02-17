@@ -17,24 +17,9 @@ Phx.vista.Tratamiento=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.Tratamiento.superclass.constructor.call(this,config);
 		this.init();
-		//this.load({params:{start:0, limit:this.tam_pag}})
+		this.load({params:{start:0, limit:this.tam_pag}})
 	},
-	loadValoresIniciales: function () {
-            Phx.vista.Tratamiento.superclass.loadValoresIniciales.call(this);
-            this.Cmp.id_enfermedad.setValue(this.maestro.id_enfermedad);
-        },
-    onReloadPage: function (m) {     
-
-            this.maestro = m;
-            this.store.baseParams = {
-                id_enfermedad: this.maestro.id_enfermedad
-            };
-            this.load({params: {start: 0, limit: 50}})
-            
-           
-            // ocultar del formulario this.ocultarComponente(this.Cmp.semaforo1);
-         },		
-			
+	
 	Atributos:[
 		{
 			//configuracion del componente
@@ -46,16 +31,6 @@ Phx.vista.Tratamiento=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
-		{
-                //configuracion del componente
-                config: {
-                    labelSeparator: '',
-                    inputType: 'hidden',
-                    name: 'id_enfermedad'
-                },
-                type: 'Field',
-                form: true
-        },
 		{
 			config:{
 				name: 'estado_reg',
@@ -73,23 +48,8 @@ Phx.vista.Tratamiento=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
-				name: 'insumos',
-				fieldLabel: 'insumos',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:500
-			},
-				type:'TextField',
-				filters:{pfiltro:'tra.insumos',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
-		{
-			config:{
 				name: 'descripcion',
-				fieldLabel: 'descripcion',
+				fieldLabel: 'Descripcion',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -101,6 +61,53 @@ Phx.vista.Tratamiento=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
+        {
+                    config: {
+                        //enviar erreglo
+                        name: 'id_insumos',
+                        fieldLabel: 'Insumos',
+                        allowBlank: true,
+                        emptyText: 'Elija una opción...',
+                        store: new Ext.data.JsonStore({
+                            url: '../../sis_medicina_natural/control/Insumo/listarInsumo',
+                            id: 'id_insumo',
+                            root: 'datos',
+                            sortInfo: {
+                                field: 'nombre',
+                                direction: 'ASC'
+                            },
+                            totalProperty: 'total',
+                            fields: ['id_insumo', 'nombre','codigo'],
+                            remoteSort: true,
+                            baseParams: {par_filtro: 'ins.nombre'}
+                        }),
+                        valueField: 'id_insumo',
+                        displayField: 'nombre',
+                        gdisplayField: 'nombre',
+                        hiddenName: 'id_insumo',
+                        forceSelection: true,
+                        typeAhead: false,
+                        triggerAction: 'all',
+                        lazyRender: true,
+                        mode: 'remote',
+                        pageSize: 5,
+                        queryDelay: 1000,
+                        anchor: '80%',
+                        gwidth: 150,
+                        minChars: 2,
+                        //para multiples
+                        enableMultiSelect: true,
+                        renderer: function (value, p, record) {
+                            return String.format('{0}', record.data['insumos']);
+                        }
+                    },
+                    //cambair el tipo de combo
+                    type: 'AwesomeCombo',
+                    id_grupo: 0,
+                    filters: {pfiltro: 'ins.nombre', type: 'string'},
+                    grid: false,
+                    form: true
+        },
 		{
 			config:{
 				name: 'fecha_reg',
@@ -144,7 +151,7 @@ Phx.vista.Tratamiento=Ext.extend(Phx.gridInterfaz,{
 				type:'Field',
 				filters:{pfiltro:'usu1.cuenta',type:'string'},
 				id_grupo:1,
-				grid:true,
+				grid:false,
 				form:false
 		},
 		{
@@ -203,7 +210,6 @@ Phx.vista.Tratamiento=Ext.extend(Phx.gridInterfaz,{
 	fields: [
 		{name:'id_tratamiento', type: 'numeric'},
 		{name:'estado_reg', type: 'string'},
-		{name:'insumos', type: 'string'},
 		{name:'descripcion', type: 'string'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usuario_ai', type: 'string'},
@@ -213,7 +219,8 @@ Phx.vista.Tratamiento=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		{name:'id_enfermedad', type: 'numeric'},
+        {name:'id_insumos', type: 'string'},
+		{name:'insumos', type: 'string'},
 		
 	],
 	sortInfo:{
@@ -221,7 +228,15 @@ Phx.vista.Tratamiento=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	bdel:true,
-	bsave:true
+	bsave:true,
+	east: {
+                url: '../../../sis_medicina_natural/vista/tratamiento_insumo/TratamientoInsumo.php',
+                title: 'Insumos asignados',
+                width: '50%',
+                cls: 'TratamientoInsumo',
+                collapsed: false
+    }
+    
 	}
 )
 </script>
