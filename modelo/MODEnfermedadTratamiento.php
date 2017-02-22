@@ -34,6 +34,7 @@ class MODEnfermedadTratamiento extends MODbase{
 		$this->captura('usr_mod','varchar');
 		
 		$this->captura('descripcion','varchar');
+		$this->captura('nombre','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();

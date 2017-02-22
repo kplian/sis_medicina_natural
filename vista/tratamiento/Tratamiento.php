@@ -48,6 +48,21 @@ Phx.vista.Tratamiento=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
+				name: 'nombre',
+				fieldLabel: 'Nombre',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:500
+			},
+				type:'TextField',
+				filters:{pfiltro:'tra.nombre',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		{
+			config:{
 				name: 'descripcion',
 				fieldLabel: 'Descripcion',
 				allowBlank: true,
@@ -221,6 +236,7 @@ Phx.vista.Tratamiento=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_mod', type: 'string'},
         {name:'id_insumos', type: 'string'},
 		{name:'insumos', type: 'string'},
+		{name:'nombre', type: 'string'},
 		
 	],
 	sortInfo:{

@@ -60,7 +60,8 @@ BEGIN
 			id_usuario_reg,
 			id_usuario_ai,
 			id_usuario_mod,
-			fecha_mod
+			fecha_mod,
+            nombre
           	) values(
 			'activo',
 			v_parametros.descripcion,
@@ -69,7 +70,8 @@ BEGIN
 			p_id_usuario,
 			v_parametros._id_usuario_ai,
 			null,
-			null
+			null,
+            v_parametros.nombre
 			)RETURNING id_tratamiento into v_id_tratamiento;
             
             --Insertar tabla tratamiento insumo
@@ -128,7 +130,8 @@ BEGIN
 			id_usuario_mod = p_id_usuario,
 			fecha_mod = now(),
 			id_usuario_ai = v_parametros._id_usuario_ai,
-			usuario_ai = v_parametros._nombre_usuario_ai
+			usuario_ai = v_parametros._nombre_usuario_ai,
+            nombre = v_parametros.nombre
 			where id_tratamiento=v_parametros.id_tratamiento;
             
             --Insertar tabla tratamiento insumo

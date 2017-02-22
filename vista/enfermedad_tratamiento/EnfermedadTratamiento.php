@@ -10,6 +10,7 @@
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
+var v_id_enfermedad=null;
 Phx.vista.EnfermedadTratamiento=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
@@ -18,12 +19,15 @@ Phx.vista.EnfermedadTratamiento=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.EnfermedadTratamiento.superclass.constructor.call(this,config);
 		this.init();
 		this.load({params:{start:0, limit:this.tam_pag}})
+		Ext.getCmp('b-new-' + this.idContenedor).hide()
 	},
     onReloadPage: function (m) {     
            this.maestro = m;
-           var aa=this;
+           
+           v_id_enfermedad=this.maestro.id_enfermedad;
            this.store.baseParams = {id_enfermedad: this.maestro.id_enfermedad};
            this.load({params: {start: 0, limit: 50}})
+           Ext.getCmp('b-new-' + this.idContenedor).show()
     },
 	/*loadValoresIniciales: function () {
 	    	//detalle
@@ -107,17 +111,17 @@ Phx.vista.EnfermedadTratamiento=Ext.extend(Phx.gridInterfaz,{
 					id: 'id_tratamiento',
 					root: 'datos',
 					sortInfo: {
-						field: 'descripcion',
+						field: 'nombre',
 						direction: 'ASC'
 					},
 					totalProperty: 'total',
-					fields: ['id_tratamiento', 'descripcion'],
+					fields: ['id_tratamiento', 'nombre'],
 					remoteSort: true,
-					baseParams: {par_filtro: 'tra.descripcion'}
+					baseParams: {par_filtro: 'tra.nombre'}
 				}),
 				valueField: 'id_tratamiento',
-				displayField: 'descripcion',
-				gdisplayField: 'descripcion',
+				displayField: 'nombre',
+				gdisplayField: 'nombre',
 				hiddenName: 'id_tratamiento',
 				forceSelection: true,
 				typeAhead: false,
@@ -126,16 +130,16 @@ Phx.vista.EnfermedadTratamiento=Ext.extend(Phx.gridInterfaz,{
 				mode: 'remote',
 				pageSize: 15,
 				queryDelay: 1000,
-				anchor: '100%',
+				anchor: '80%',
 				gwidth: 150,
 				minChars: 2,
 				renderer : function(value, p, record) {
-					return String.format('{0}', record.data['descripcion']);
+					return String.format('{0}', record.data['nombre']);
 				}
 			},
 			type: 'ComboBox',
 			id_grupo: 0,
-			filters: {pfiltro: 'tra.descripcion',type: 'string'},
+			filters: {pfiltro: 'tra.nombre',type: 'string'},
 			grid: true,
 			form: true
 		},
@@ -266,8 +270,8 @@ Phx.vista.EnfermedadTratamiento=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		{name:'descripcion', type: 'string'},
-		
+		//{name:'descripcion', type: 'string'},
+		{name:'nombre', type: 'string'},
 		
 	],
 	sortInfo:{
@@ -276,8 +280,12 @@ Phx.vista.EnfermedadTratamiento=Ext.extend(Phx.gridInterfaz,{
 	},
 	bdel:true,
 	bsave:false,
-    bnew:false,
-    bedit:false
+    onButtonNew: function () {
+	            Phx.vista.EnfermedadTratamiento.superclass.onButtonNew.call(this);
+			    this.Cmp.id_enfermedad.setValue(v_id_enfermedad);
+			    
+
+       },
 	}
 )
 </script>

@@ -59,7 +59,8 @@ BEGIN
 			fecha_reg,
 			id_usuario_reg,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+            descripcion
           	) values(
 			v_parametros.codigo,
 			v_parametros.nombre,
@@ -69,7 +70,8 @@ BEGIN
 			now(),
 			p_id_usuario,
 			null,
-			null
+			null,
+            v_parametros.descripcion
 			)RETURNING id_insumo into v_id_insumo;
 			
 			--Definicion de la respuesta
@@ -98,7 +100,8 @@ BEGIN
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
 			id_usuario_ai = v_parametros._id_usuario_ai,
-			usuario_ai = v_parametros._nombre_usuario_ai
+			usuario_ai = v_parametros._nombre_usuario_ai,
+            descripcion = v_parametros.descripcion
 			where id_insumo=v_parametros.id_insumo;
                
 			--Definicion de la respuesta

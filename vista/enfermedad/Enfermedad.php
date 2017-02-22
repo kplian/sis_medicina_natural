@@ -88,17 +88,17 @@ Phx.vista.Enfermedad=Ext.extend(Phx.gridInterfaz,{
                             id: 'id_tratamiento',
                             root: 'datos',
                             sortInfo: {
-                                field: 'descripcion',
+                                field: 'nombre',
                                 direction: 'ASC'
                             },
                             totalProperty: 'total',
-                            fields: ['id_tratamiento', 'descripcion'],
+                            fields: ['id_tratamiento', 'nombre'],
                             remoteSort: true,
-                            baseParams: {par_filtro: 'tra.descripcion'}
+                            baseParams: {par_filtro: 'tra.nombre'}
                         }),
                         valueField: 'id_tratamiento',
-                        displayField: 'descripcion',
-                        gdisplayField: 'descripcion',
+                        displayField: 'nombre',
+                        gdisplayField: 'nombre',
                         hiddenName: 'id_tratamiento',
                         forceSelection: true,
                         typeAhead: false,
@@ -113,13 +113,13 @@ Phx.vista.Enfermedad=Ext.extend(Phx.gridInterfaz,{
                         //para multiples
                         enableMultiSelect: true,
                         renderer: function (value, p, record) {
-                            return String.format('{0}', record.data['tratamientos']);
+                            return String.format('{0}', record.data['nombre']);
                         }
                     },
                     //cambair el tipo de combo
                     type: 'AwesomeCombo',
                     id_grupo: 0,
-                    filters: {pfiltro: 'tra.descripcion', type: 'string'},
+                    filters: {pfiltro: 'tra.nombre', type: 'string'},
                     grid: false,
                     form: true
         },

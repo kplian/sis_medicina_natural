@@ -60,3 +60,13 @@ CREATE TABLE mn.ttratamiento_insumo (
 
 WITH (oids = false);
 /***********************************F-SCP-JUAN-MN-0-11/06/2017****************************************/
+
+/***********************************I-SCP-JUAN-MN-0-18/06/2017****************************************/
+
+ALTER TABLE mn.ttratamiento
+  ADD COLUMN nombre VARCHAR(50);
+  
+
+ALTER TABLE mn.tinsumo
+  ADD COLUMN descripcion VARCHAR(500);
+/***********************************F-SCP-JUAN-MN-0-18/06/2017****************************************/

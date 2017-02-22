@@ -35,6 +35,7 @@ class MODTratamientoInsumo extends MODbase{
 		
 		$this->captura('nombre','varchar');
 		$this->captura('codigo','varchar');
+		$this->captura('descripcion','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

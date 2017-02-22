@@ -59,7 +59,8 @@ BEGIN
 						entr.id_usuario_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        t.descripcion	
+                        t.descripcion,
+                        t.nombre	
 						from mn.tenfermedad_tratamiento entr
 						inner join segu.tusuario usu1 on usu1.id_usuario = entr.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = entr.id_usuario_mod

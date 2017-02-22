@@ -33,21 +33,6 @@ Phx.vista.Insumo=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
-				name: 'codigo',
-				fieldLabel: 'Codigo',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:500
-			},
-				type:'TextField',
-				filters:{pfiltro:'ins.codigo',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
-		{
-			config:{
 				name: 'nombre',
 				fieldLabel: 'Nombre',
 				allowBlank: true,
@@ -57,6 +42,36 @@ Phx.vista.Insumo=Ext.extend(Phx.gridInterfaz,{
 			},
 				type:'TextField',
 				filters:{pfiltro:'ins.nombre',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		{
+			config:{
+				name: 'descripcion',
+				fieldLabel: 'Descripcion',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:500
+			},
+				type:'TextArea',
+				filters:{pfiltro:'ins.descripcion',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		{
+			config:{
+				name: 'codigo',
+				fieldLabel: 'Codigo',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:500
+			},
+				type:'TextField',
+				filters:{pfiltro:'ins.codigo',type:'string'},
 				id_grupo:1,
 				grid:true,
 				form:true
@@ -188,6 +203,7 @@ Phx.vista.Insumo=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+        {name:'descripcion', type: 'string'},
 		
 	],
 	sortInfo:{

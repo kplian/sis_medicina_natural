@@ -67,7 +67,8 @@ BEGIN
                         (select array_to_string( array_agg(ins.nombre), '','' ) from mn.ttratamiento tr 
                         join mn.ttratamiento_insumo ti on ti.id_tratamiento=tr.id_tratamiento
                         join mn.tinsumo ins on ins.id_insumo = ti.id_insumo
-                        where tr.id_tratamiento= tra.id_tratamiento)::VARCHAR as insumos
+                        where tr.id_tratamiento= tra.id_tratamiento)::VARCHAR as insumos,
+                        tra.nombre
                         
 						from mn.ttratamiento tra
 						inner join segu.tusuario usu1 on usu1.id_usuario = tra.id_usuario_reg

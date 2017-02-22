@@ -34,6 +34,7 @@ class MODTratamiento extends MODbase{
 		
 		$this->captura('id_insumos','varchar');
 		$this->captura('insumos','varchar');
+		$this->captura('nombre','varchar');
 		
 		
 		//Ejecuta la instruccion
@@ -55,6 +56,7 @@ class MODTratamiento extends MODbase{
 		$this->setParametro('descripcion','descripcion','varchar');
 		
 		$this->setParametro('id_insumos','id_insumos','varchar');
+		$this->setParametro('nombre','nombre','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -76,6 +78,7 @@ class MODTratamiento extends MODbase{
 		$this->setParametro('descripcion','descripcion','varchar');
 		
 		$this->setParametro('id_insumos','id_insumos','varchar');
+		$this->setParametro('nombre','nombre','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

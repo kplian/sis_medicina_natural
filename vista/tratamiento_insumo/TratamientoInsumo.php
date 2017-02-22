@@ -10,6 +10,7 @@
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
+var v_id_tratamiento=null;
 Phx.vista.TratamientoInsumo=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
@@ -18,12 +19,14 @@ Phx.vista.TratamientoInsumo=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.TratamientoInsumo.superclass.constructor.call(this,config);
 		this.init();
 		this.load({params:{start:0, limit:this.tam_pag}})
+        Ext.getCmp('b-new-' + this.idContenedor).hide()
 	},
     onReloadPage: function (m) {     
            this.maestro = m;
-           var aa=this;
+           v_id_tratamiento=this.maestro.id_tratamiento;
            this.store.baseParams = {id_tratamiento: this.maestro.id_tratamiento};
            this.load({params: {start: 0, limit: 50}})
+           Ext.getCmp('b-new-' + this.idContenedor).show()
     },		
 	Atributos:[
 		{
@@ -133,12 +136,27 @@ Phx.vista.TratamientoInsumo=Ext.extend(Phx.gridInterfaz,{
                         }
                     },
                     //cambair el tipo de combo
-                    type: 'AwesomeCombo',
+                    type: 'ComboBox',
                     id_grupo: 0,
                     filters: {pfiltro: 'ins.nombre', type: 'string'},
                     grid: true,
                     form: true
         },
+		{
+			config:{
+				name: 'descripcion',
+				fieldLabel: 'Descripcion',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:500
+			},
+				type:'TextField',
+				filters:{pfiltro:'i.descripcion',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:false
+		},
 		{
 			config:{
 				name: 'codigo',
@@ -152,7 +170,7 @@ Phx.vista.TratamientoInsumo=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'i.codigo',type:'string'},
 				id_grupo:1,
 				grid:true,
-				form:true
+				form:false
 		},
 		{
 			config:{
@@ -283,6 +301,7 @@ Phx.vista.TratamientoInsumo=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_mod', type: 'string'},
         {name:'nombre', type: 'string'},
         {name:'codigo', type: 'string'},
+        {name:'descripcion', type: 'string'},
 		
 	],
 	sortInfo:{
@@ -291,8 +310,12 @@ Phx.vista.TratamientoInsumo=Ext.extend(Phx.gridInterfaz,{
 	},
 	bdel:true,
 	bsave:false,
-	bnew:false,
-	bedit:false
+    onButtonNew: function () {
+	            Phx.vista.TratamientoInsumo.superclass.onButtonNew.call(this);
+			    this.Cmp.id_tratamiento.setValue(v_id_tratamiento);
+			    
+
+       },
 	}
 )
 </script>

@@ -60,7 +60,8 @@ BEGIN
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
                         i.nombre,
-                        i.codigo			
+                        i.codigo,
+                        i.descripcion			
 						from mn.ttratamiento_insumo trin
 						inner join segu.tusuario usu1 on usu1.id_usuario = trin.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = trin.id_usuario_mod

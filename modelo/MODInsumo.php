@@ -32,6 +32,7 @@ class MODInsumo extends MODbase{
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
+        $this->captura('descripcion','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -51,7 +52,7 @@ class MODInsumo extends MODbase{
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('nombre','nombre','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
-
+		$this->setParametro('descripcion','descripcion','varchar');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -71,7 +72,7 @@ class MODInsumo extends MODbase{
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('nombre','nombre','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
-
+		$this->setParametro('descripcion','descripcion','varchar');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
